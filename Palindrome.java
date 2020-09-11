@@ -1,28 +1,44 @@
+package task1;
+
 import java.util.Scanner;
 
-public class Palindrome {
-    public static void isPalindrome() {
+public class Anagram {
+    private void reverseSeparateWord() {
         Scanner scanner = new Scanner(System.in);
-        String inputText = "", reverseText = "";
+        System.out.println("Please, enter some text:");
+        String inputText = scanner.nextLine();
+        String[] words = inputText.split(" "); //разделить текст на слова
+        String result = "";
+        for (int i = 0; i < words.length; i++) { // обработать каждое слово по отдельности для сохр.порядка
+            String temp = words[i];
+            char sentencePart[] = temp.toCharArray(); // слово на массив символов
 
-        do {
-            System.out.println("Please input not empty text:");
-            inputText = scanner.nextLine();
+            int prevIndex = 0;
+            int nextIndex = sentencePart.length - 1;
 
-            char[] charArray = inputText.toCharArray();
+            for (int j = 0; j < sentencePart.length; j++) {
+                char symbolToBeSwapped = sentencePart[nextIndex];
 
-            for (int i = charArray.length-1; i>=0; i--) {
-                reverseText += charArray[i];
+                if (prevIndex < nextIndex) {
+                    if (!Character.isLetter(sentencePart[prevIndex])) {
+                        prevIndex++;
+                    } else {
+                        if (!Character.isLetter(symbolToBeSwapped)) {
+                            nextIndex--;
+                        } else {
+                            sentencePart[nextIndex] = sentencePart[prevIndex];
+                            sentencePart[prevIndex] = symbolToBeSwapped;
+                            prevIndex++;
+                            nextIndex--;
+                        }
+                    }
+                }
             }
-
-            if (inputText != null && !inputText.isEmpty()) {
-                String response = reverseText.equals(inputText) ? "is a palindrome!" : "is not a palindrome!";
-                System.out.println(inputText + " " + response);
-            } else System.out.println("Text is empty");
-        } while (inputText.isEmpty());
+            result+=new String(sentencePart)+" "; // конкатенировать все слова обратно
+        }
+        System.out.println(result);
     }
-
     public static void main(String[] args) {
-        new Palindrome().isPalindrome();
+        new Anagram().reverseSeparateWord();
     }
 }
